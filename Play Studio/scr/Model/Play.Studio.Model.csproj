@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F62A1641-914D-4947-8A2F-AE44EE6FA449}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Play.Studio.Model</RootNamespace>
+    <AssemblyName>Play.Studio.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="scr\Project\ProjectDirectory.cs" />
+    <Compile Include="scr\Project\ProjectFile.cs" />
+    <Compile Include="scr\Project\Interface\IProjectDirectoryItem.cs" />
+    <Compile Include="scr\Project\Interface\IProjectFileItem.cs" />
+    <Compile Include="scr\Project\Interface\IProject.cs" />
+    <Compile Include="scr\Project\Interface\IProjectItem.cs" />
+    <Compile Include="scr\Project\Interface\IProjectReferenceItem.cs" />
+    <Compile Include="scr\Project\Interface\ISolution.cs" />
+    <Compile Include="scr\Project\Interface\IProjectItemType.cs" />
+    <Compile Include="scr\Project\ProjectItem.cs" />
+    <Compile Include="scr\Project\Project.cs" />
+    <Compile Include="scr\Project\ProjectReference.cs" />
+    <Compile Include="scr\Project\Solution.cs" />
+    <Compile Include="scr\Templates\ProjectTemplates\BaseProjectTemplate.cs" />
+    <Compile Include="scr\Templates\Commands.cs" />
+    <Compile Include="scr\Templates\ProjectTemplates\ProjectItemTemplate.cs" />
+    <Compile Include="scr\Templates\ProjectTemplates\ProjectTemplate.cs" />
+    <Compile Include="scr\Templates\Template.cs" />
+    <Compile Include="scr\Templates\TemplateConfig.cs" />
+    <Compile Include="scr\Templates\TemplateException.cs" />
+    <Compile Include="scr\Templates\ProjectTemplates\ProjectTemplateFile.cs" />
+    <Compile Include="scr\Templates\ProjectTemplates\ProjectTemplateReference.cs" />
+    <Compile Include="scr\Templates\UserInterfaceTemplates\BaseUserInterfaceTemplate.cs" />
+    <Compile Include="scr\Templates\UserInterfaceTemplates\MenuTemplate.cs" />
+    <Compile Include="scr\Templates\UserInterfaceTemplates\ExpandControlType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Play.Studio.Core.csproj">
+      <Project>{1992C38C-9072-420F-8D1E-BC17470047B6}</Project>
+      <Name>Play.Studio.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="scr\Resource\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

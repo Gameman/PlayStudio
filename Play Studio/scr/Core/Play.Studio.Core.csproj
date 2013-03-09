@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1992C38C-9072-420F-8D1E-BC17470047B6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Play.Studio.Core</RootNamespace>
+    <AssemblyName>Play.Studio.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>false</NoStdLib>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Wave.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\lib\mono.cecil\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="scr\Command\AOP\Enums.cs" />
+    <Compile Include="scr\Command\Addins\AddinTree.cs" />
+    <Compile Include="scr\Command\Addins\Attributes.cs" />
+    <Compile Include="scr\Command\CommandEventListener.cs" />
+    <Compile Include="scr\Command\CommandHistoryEventListener.cs" />
+    <Compile Include="scr\Command\Addins\Addin.cs" />
+    <Compile Include="scr\Command\Addins\AddinState.cs" />
+    <Compile Include="scr\Command\Addins\AddinContent.cs" />
+    <Compile Include="scr\Command\Command.cs" />
+    <Compile Include="scr\Command\CommandAttribute.cs" />
+    <Compile Include="scr\Command\CommandCollection.cs" />
+    <Compile Include="scr\Command\CommandCollectionEventArgs.cs" />
+    <Compile Include="scr\Command\CommandEventArgs.cs" />
+    <Compile Include="scr\Command\CommandException.cs" />
+    <Compile Include="scr\Command\CommandHistory.cs" />
+    <Compile Include="scr\Command\CommandHistoryOperation.cs" />
+    <Compile Include="scr\Command\CommandManager.cs" />
+    <Compile Include="scr\Command\CommandResult.cs" />
+    <Compile Include="scr\Command\AOP\Attributes.cs" />
+    <Compile Include="scr\Command\Exceptions\Error.cs" />
+    <Compile Include="scr\Command\Logging\Attributes.cs" />
+    <Compile Include="scr\Command\Logging\Enums.cs" />
+    <Compile Include="scr\Command\Logging\ILogger.cs" />
+    <Compile Include="scr\Command\Logging\Logger.cs" />
+    <Compile Include="scr\Command\Messaging\Attributes.cs" />
+    <Compile Include="scr\Command\Messaging\Meesager.cs" />
+    <Compile Include="scr\Command\Resource\AssemblyResource.cs" />
+    <Compile Include="scr\Command\Resource\Attributes.cs" />
+    <Compile Include="scr\Command\Resource\Resource.cs" />
+    <Compile Include="scr\Command\Resource\ResourceException.cs" />
+    <Compile Include="scr\Command\Resource\Url.cs" />
+    <Compile Include="scr\Utility\CallbackOnDispose.cs" />
+    <Compile Include="scr\Utility\Compressor.cs" />
+    <Compile Include="scr\Utility\OperateMode.cs" />
+    <Compile Include="scr\Utility\SeperateAppDomainAssemblyLoader.cs" />
+    <None Include="scr\Utility\Extensions\GraphicsEx.cs" />
+    <Compile Include="scr\Utility\Extensions\ObjectExtensions.cs" />
+    <Compile Include="scr\Utility\ConvertUtility.MD5.cs" />
+    <Compile Include="scr\Utility\TemporaryFolder.cs" />
+    <Compile Include="scr\Services\FileService\FileService.TemporaryFolder.cs" />
+    <Compile Include="scr\Services\TypeService\ReflectionAccessor.cs" />
+    <Compile Include="scr\Services\TypeService\TypeService.cs" />
+    <Compile Include="scr\Utility\Mime.cs" />
+    <Compile Include="scr\Utility\Collections\IQuickComparer.cs" />
+    <Compile Include="scr\Utility\Collections\QuickSortCollection.cs" />
+    <Compile Include="scr\Utility\Collections\UnLockQueue.cs" />
+    <Compile Include="scr\Utility\DebugTextWriter.cs" />
+    <Compile Include="scr\Utility\Collections\ReadOnlyCollectionWrapper.cs" />
+    <Compile Include="scr\Utility\ConvertUtility.cs" />
+    <Compile Include="scr\Command\TaskPool\ActionTask.cs" />
+    <Compile Include="scr\Command\TaskPool\FuncTask.cs" />
+    <Compile Include="scr\Command\TaskPool\Task.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Internal\WorkItemCallback.cs" />
+    <Compile Include="scr\Command\TaskPool\TaskException.cs" />
+    <Compile Include="scr\Command\TaskPool\TaskPool.cs" />
+    <Compile Include="scr\Command\TaskPool\TaskStartedInfo.cs" />
+    <Compile Include="scr\Command\TaskPool\TaskState.cs" />
+    <Compile Include="scr\Command\TaskPool\TaskStateCallback.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Command\IHasPriority.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Command\PriorityQueue.cs" />
+    <Compile Include="scr\Utility\Collections\SynchronizedDictionary.cs" />
+    <Compile Include="scr\Utility\Collections\SynchronizedList.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Command\WokerList.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Command\WorkItemWaitHandle.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Command\WorkItemQueue.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Command\WorkItemWaitingList.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Exceptions.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Internal\Worker.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Internal\WorkItem.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Internal\WorkItemRunMode.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Internal\WorkItemState.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\Internal\WorkProcessor.cs" />
+    <Compile Include="scr\Command\TaskPool\Threading\WorkGroup.cs" />
+    <Compile Include="scr\Services\FileService\FileEventArgs.cs" />
+    <Compile Include="scr\Services\FileService\FileService.cs" />
+    <Compile Include="scr\Utility\NativeMethods.cs" />
+    <Compile Include="scr\Services\ServiceNotFoundException.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
