@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Template author="Yang Tuo" version="1.0">
+
+	<Config
+		  name        = "name"
+		  icon        = "icon"
+		  index	      = "0"
+		  support     = "topmenu" />
+
+	<Description>miao shu</Description>
+	
+	<Units>
+		<Unit header="视图" shortkey="v">
+			<Unit header="代码" shortkey="f7" />
+			<Unit header="场景" shortkey="s" />
+			<Unit header="-" />
+			<Unit header="解决方案资源管理器" shortkey="ctrl+w;s" />
+			<Unit header="体系结构资源管理器" shortkey="ctrl+w;n" />
+			<Unit header="-" />
+			<Unit header="错误列表" shortkey="ctrl+w;e" />
+			<Unit header="输出" shortkey="ctrl+w;e" />
+			<Unit header="起始页" shortkey="ctrl+w;e" />
+			<Unit header="任务列表" shortkey="ctrl+w;e" />
+			<Unit header="工具箱" shortkey="ctrl+w;e" />
+			<Unit header="-" />
+			<Unit header="属性窗口" shortkey="ctrl+w;e" />
+		</Unit>
+	</Units>
+</Template>
