@@ -3,7 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Play.Studio.Core.Services;
+using System.Threading.Tasks;
 using Play.Studio.Module.Resource;
+using Play.Studio.Core.Utility;
+using System.Text.RegularExpressions;
 
 namespace Play.Studio.Module.Templates
 {
@@ -105,7 +108,18 @@ namespace Play.Studio.Module.Templates
 
         protected static T                  Load(Stream stream)                         
         {
-            XElement templateNode = XElement.Load(stream); //.Load(fullName);
+            // 替换文字
+            var sr = new StreamReader(stream);
+            var xmlTxt = sr.ReadToEnd();
+                                                                 // @\{.*?\} 
+            Parallel.ForEach<Capture>(StringParser.Parse(xmlTxt, "@+{[^}]+}").GroupBy(X => X.Value).Where(g => g.Count() == 1)
+                    .Select(g => g.ElementAt(0)), (o, s) => 
+            {
+                xmlTxt = xmlTxt.Replace(o.Value, Resource.Resource.Read(o.Value.TrimStart('@', '{').TrimEnd('}')).ToString());
+            });
+            
+            // 加载模板
+            XElement templateNode = XElement.Load(new StringReader(xmlTxt)); //.Load(fullName);
             if (templateNode == null)
             {
                 //MessageService.ShowException(new TemplateLoadException(fullName));

@@ -82,6 +82,7 @@
     <None Include="scr\Utility\Extensions\GraphicsEx.cs" />
     <Compile Include="scr\Utility\Extensions\ObjectExtensions.cs" />
     <Compile Include="scr\Utility\ConvertUtility.MD5.cs" />
+    <Compile Include="scr\Utility\StringParser.cs" />
     <Compile Include="scr\Utility\TemporaryFolder.cs" />
     <Compile Include="scr\Services\FileService\FileService.TemporaryFolder.cs" />
     <Compile Include="scr\Services\TypeService\ReflectionAccessor.cs" />

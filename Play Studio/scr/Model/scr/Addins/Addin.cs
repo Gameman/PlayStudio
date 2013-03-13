@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Play.Studio.Core;
-using Play.Studio.Module.Resource;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Resources;
-using Play.Studio.Core.Utility;
+using Play.Studio.Core;
+using Play.Studio.Module.Resource;
 
 namespace Play.Studio.Module.Addins
 {
@@ -47,9 +45,6 @@ namespace Play.Studio.Module.Addins
                     m_resourceManagers[name] = new ResourceManager(resource.Substring(0, resource.Length - "resources".Length - 1), Assembly);
                 }
             }
-
-             //   [0]: "Play.Studio.Workbench.Properties.Resources.resources"
-             //   [1]: "Play.Studio.Workbench.g.resources"
         }
 
 
