@@ -137,7 +137,7 @@ namespace Play.Studio.Module.Templates
             throw new System.NotImplementedException();
         }
 
-        protected internal override object  OnRead(Stream stream, params object[] args) 
+        protected internal override object  OnRead(Stream stream)                       
         {
             return Load(stream);
         }

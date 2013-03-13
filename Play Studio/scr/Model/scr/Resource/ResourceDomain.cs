@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using Play.Studio.Module.Addins;
 
 namespace Play.Studio.Module.Resource
@@ -42,34 +40,35 @@ namespace Play.Studio.Module.Resource
         /// <summary>
         /// 读取域内资源
         /// </summary>
-        protected internal abstract Stream Read(Uri uri);
+        protected internal abstract object Read(Uri uri);
 
         /// <summary>
         /// 通过uri获得资源域
         /// </summary>
-        internal static ResourceDomain Get(Uri uri)                             
+        internal static ResourceDomain From(Uri uri)                             
         {
-            if (!s_resourceDomains.ContainsKey(uri.Root))
+            var root = GetRoot(uri);
+            if (!s_resourceDomains.ContainsKey(root))
             {
 
                 ResourceDomain  domain      = null;
                 switch (GetDomainType(uri))
                 {
                     case ResourceDomainTypes.Addin:
-                        domain = new AddinResourceDomain(uri.Root.Substring(0, uri.FileName.IndexOf(';')));
+                        domain = new AddinResourceDomain(root);
                         break;
                     case ResourceDomainTypes.Local:
-                        domain = new LocalResourceDomain(uri.Root);
+                        domain = new LocalResourceDomain(root);
                         break;
                     case ResourceDomainTypes.Network:
                         domain = new NetworkResourceDomain(uri.FileName);
                         break;
                 }
 
-                s_resourceDomains[uri.Root] = domain;
+                s_resourceDomains[root] = domain;
             }
 
-            return s_resourceDomains[uri.Root];
+            return s_resourceDomains[root];
         }
 
         /// <summary>
@@ -91,6 +90,24 @@ namespace Play.Studio.Module.Resource
             }
         }
 
+        /// <summary>
+        /// 获得root
+        /// </summary>
+        private static string GetRoot(Uri uri) 
+        {
+            if (uri.FileName.Contains(";"))
+            {
+                return uri.FileName.Substring(0, uri.FileName.IndexOf(';'));
+            }
+            else if (uri.FileName.Contains("http") || uri.FileName.Contains("ftp"))
+            {
+                return uri.FileName;
+            }
+            else
+            {
+                return Path.GetDirectoryName(uri.FileName);
+            }
+        }
     }
 
     /// <summary>
@@ -111,9 +128,9 @@ namespace Play.Studio.Module.Resource
             m_addin = Addin.LoadFrom(domainName);
         }
 
-        protected internal override Stream Read(Uri uri)                        
+        protected internal override object Read(Uri uri)                        
         {
-            return m_addin.GetResourceStream(uri.FileName);
+            return m_addin.GetResource(uri.FileName.Substring(DomainName.Length + 1, uri.FileName.Length - DomainName.Length - 1));
         }
     }
 
@@ -132,7 +149,7 @@ namespace Play.Studio.Module.Resource
         {
         }
 
-        protected internal override Stream Read(Uri uri)                        
+        protected internal override object Read(Uri uri)                        
         {
             return new FileStream(uri.FileName, FileMode.Open, FileAccess.Read);
         }
@@ -153,7 +170,7 @@ namespace Play.Studio.Module.Resource
         {
         }
 
-        protected internal override Stream Read(Uri uri)                        
+        protected internal override object Read(Uri uri)                        
         {
             throw new NotImplementedException();
         }

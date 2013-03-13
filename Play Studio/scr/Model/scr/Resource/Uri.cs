@@ -8,8 +8,11 @@ namespace Play.Studio.Module.Resource
     /// </summary>
     public struct Uri
     {
+        public const string UNKNOWN     = "play/known";
+        public const string ADDIN       = "play/addin";
+        public const string NETWORK     = "play/network";
+
         public string   FileName    { get; private set; }
-        public string   Root        { get; private set; }
         public string   Extension   { get; private set; }
         public UriType  Type        { get; private set; }
 
@@ -23,8 +26,7 @@ namespace Play.Studio.Module.Resource
         {
             FileName        = path;
             Type            = type;
-            Root            = Path.GetDirectoryName(path);
-            Extension       = Path.GetExtension(path);
+            Extension       = AnaysisExtension(path);
         }
 
         public override string ToString()
@@ -35,6 +37,14 @@ namespace Play.Studio.Module.Resource
         public static Uri From(string path) 
         {
             return new Uri(path, UriType.Absolute);
+        }
+
+        /// <summary>
+        /// 分析资源类型
+        /// </summary>
+        private static string AnaysisExtension(string uri)
+        {
+            return ADDIN;
         }
     }
 

@@ -25,8 +25,9 @@ namespace Play.Studio.Workbench
         public Workbench()
         {
             Resource.Register<MenuTemplate>(".uit");
+            
 
-            var obj = Resource.Read(@"D:\我的文档与桌面\桌面\mysvn\Play Studio\data\templates\ui\menu\file.uit");
+
 
             InitializeComponent();
         }
@@ -36,9 +37,9 @@ namespace Play.Studio.Workbench
         [Logging(AopTypes.Prefixed, LoggingType.Info, "shuai!")]
         public void OnWindowMin(object sender, EventArgs e) 
         {
-            WindowState = System.Windows.WindowState.Minimized;
+            var obj = Resource.Read(@"Play.Studio.Workbench;Properties.Resources->test");
 
-            //Play.Studio.Module.Resource.Resource.Read("
+            WindowState = System.Windows.WindowState.Minimized;
         }
 
         public void OnWindowMax(object sender, EventArgs e) 

@@ -40,9 +40,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="scr\Addins\Addin.cs" />
+    <Compile Include="scr\Addins\AddinResource.cs" />
     <Compile Include="scr\Addins\AddinState.cs" />
-    <Compile Include="scr\Addins\AddinTree.cs" />
     <Compile Include="scr\Addins\Attributes.cs" />
+    <Compile Include="scr\Addins\Exceptions.cs" />
     <Compile Include="scr\Project\ProjectDirectory.cs" />
     <Compile Include="scr\Project\ProjectFile.cs" />
     <Compile Include="scr\Project\Interface\IProjectDirectoryItem.cs" />

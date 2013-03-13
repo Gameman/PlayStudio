@@ -4,13 +4,14 @@ using System.IO;
 using System.Threading;
 using Play.Studio.Core.Command.TaskPool;
 using Play.Studio.Core.Services;
+using Play.Studio.Module.Addins;
 
 namespace Play.Studio.Module.Resource
 {
     /// <summary>
     /// 资源接口
     /// </summary>
-    interface IResource                                                                                                                  
+    public interface IResource                                                                                                                  
     {
         /// <summary>
         /// 资源地址
@@ -26,6 +27,11 @@ namespace Play.Studio.Module.Resource
         /// 资源名
         /// </summary>
         ResourceName    Name        { get; }
+
+        /// <summary>
+        /// 获得结果
+        /// </summary>
+        object GetResult();
     }
 
     /// <summary>
@@ -73,7 +79,7 @@ namespace Play.Studio.Module.Resource
             Register(extension, typeof(T));
         }
 
-        public Uri                          Uri             { get { return Name.Uri; } }
+        public Uri                          Uri             { get; private set; }
         public bool                         Loaded          { get; private set; }
         public ResourceName                 Name            { get; private set; }
 
@@ -82,10 +88,7 @@ namespace Play.Studio.Module.Resource
 
         public object                       GetResult()     
         {
-            if (m_result == null)
-                m_result = OnRead(Uri);
-
-            return m_result;
+            return OnRead();
         }
 
         /// <summary>
@@ -101,21 +104,15 @@ namespace Play.Studio.Module.Resource
         /// </summary>
         public static Resource              Create(Type resourceType, Uri uri, params object[] args)
         {
-            return Create(resourceType, ResourceName.From(uri), args);
-        }
-
-        /// <summary>
-        /// 创建资源
-        /// </summary>
-        public static Resource              Create(Type resourceType, ResourceName resourceName, params object[] args)                                                                   
-        {
             var resource = TypeService.CreateInstance(resourceType, args) as Resource;
-            resource.Name = resourceName;
+            resource.Uri = uri;
+            resource.Name = ResourceName.From(uri);
             return resource;
         }
 
         /// <summary>
         /// 读取资源
+        /// Play.Studio.Workbench;Properties.Resources->test 读取程序集 Play.Studio.Workbench 中 Properties/Resources.rexs的test资源
         /// </summary>
         public static object                Read(string path, params object[] args)                                                             
         {
@@ -127,11 +124,17 @@ namespace Play.Studio.Module.Resource
         /// </summary>
         public static object                Read(Uri uri, params object[] args)                                                                 
         {
-            // 根据uri mime 获得资源类型
-            if (m_extResourceType.ContainsKey(uri.Extension))
-                return Read(m_extResourceType[uri.Extension], uri, args);
-            else
-                throw new ResourceException();
+            switch (uri.Extension) 
+            {
+                case Uri.ADDIN:
+                    return Read(typeof(AddinResource), uri);
+                default:
+                    // 根据uri mime 获得资源类型
+                    if (m_extResourceType.ContainsKey(uri.Extension))
+                        return Read(m_extResourceType[uri.Extension], uri, args);
+                    else
+                        throw new ResourceException();
+            }
         }
 
         /// <summary>
@@ -181,22 +184,34 @@ namespace Play.Studio.Module.Resource
         /// <summary>
         /// 当读取资源
         /// </summary>
-        protected internal object           OnRead(Uri uri)                                                               
+        protected internal object           OnRead()                                                               
         {
-            // 得到资源名
-            var domain = ResourceDomain.Get(uri);
-
-            // 读取资源
-            using (Stream stream = domain.Read(uri))
+            if (m_result == null)
             {
-                if (stream == null)
+                var resource = Name.Domain.Read(Uri);
+                if (resource is Stream)
                 {
-                    throw new ResourceException();
+                    // 读取资源
+                    using (Stream stream = resource as Stream)
+                    {
+                        if (stream == null)
+                        {
+                            throw new ResourceException();
+                        }
+                        else
+                        {
+                            return (m_result = OnRead(stream));
+                        }
+                    }
                 }
-                else
+                else 
                 {
-                    return OnRead(stream);
+                    return m_result = resource;
                 }
+            }
+            else 
+            {
+                return m_result;
             }
         }
 
@@ -235,14 +250,6 @@ namespace Play.Studio.Module.Resource
         public static Resource<T>           Create(Type resourceType, Uri uri, params object[] args)
         {
             return Create(resourceType, uri, args);
-        }
-
-        /// <summary>
-        /// 创建资源
-        /// </summary>
-        public static Resource<T> Create(Type resourceType, ResourceName name, params object[] args)
-        {
-            return Create(resourceType, name, args);
         }
 
         /// <summary>
@@ -303,14 +310,6 @@ namespace Play.Studio.Module.Resource
         public static Resource<TResource, TResourceType> Create(Uri uri, params object[] args)
         {
             return Create(typeof(TResourceType), uri, args) as Resource<TResource, TResourceType>;
-        }
-
-        /// <summary>
-        /// 创建资源
-        /// </summary>
-        public static Resource<TResource, TResourceType> Create(ResourceName name, params object[] args)
-        {
-            return Create(typeof(TResourceType), name, args) as Resource<TResource, TResourceType>;
         }
 
         /// <summary>
