@@ -7,14 +7,9 @@ namespace Play.Studio.Module.Templates
     /// </summary>
     public sealed class ProjectItemTemplate : BaseProjectTemplate<ProjectItemTemplate>
     {
-        public override string TemplateExtension
-        {
-            get { return "wpt"; }
-        }
-
         public override string TemplatesRoot
         {
-            get { return "items"; }
+            get { return "item"; }
         }
 
         protected override void OnLoad(XElement xelDoc)

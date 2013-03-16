@@ -54,7 +54,7 @@ namespace Play.Studio.Module.Templates
         /// <summary>
         /// 模板合集
         /// </summary>
-        public static ReadOnlyCollection<T>             Templates                       
+        public static ReadOnlyCollection<T>             Templates                                   
         { 
             get 
             { 
@@ -91,7 +91,7 @@ namespace Play.Studio.Module.Templates
         /// <summary>
         /// 更新模板
         /// </summary>
-        internal static void                UpdateTemplates()                           
+            internal static void                        UpdateTemplates()                           
         {
             var templateType = typeof(T);
             var searchTemplate =  TypeService.CreateInstance(templateType) as Template<T>;
@@ -106,7 +106,7 @@ namespace Play.Studio.Module.Templates
                 templatePaths.Select(X => Resource<T>.Read(templateType, new Uri(X, UriType.Absolute))).Where(X => X != null).OrderBy(X => X.Config.Contains("index") ? int.Parse(X.Config["index"]) : int.MaxValue).ToArray());
         }
 
-        protected static T                  Load(Stream stream)                         
+        protected static T                              Load(Stream stream)                         
         {
             // 替换文字
             var sr = new StreamReader(stream);
@@ -146,19 +146,19 @@ namespace Play.Studio.Module.Templates
             return template;
         }
 
-        protected internal override void    OnSave(Stream stream, params object[] args) 
+        protected internal override void                OnSave(Stream stream, params object[] args) 
         {
             throw new System.NotImplementedException();
         }
 
-        protected internal override object  OnRead(Stream stream)                       
+        protected internal override object              OnRead(Stream stream)                       
         {
             return Load(stream);
         }
 
-        protected abstract void             OnLoad(XElement templateNode);
+        protected abstract void                         OnLoad(XElement templateNode);
 
-        private static TemplateConfig       LoadConfig(XElement xelNode)                
+        private static TemplateConfig                   LoadConfig(XElement xelNode)                
         {
             int configCount = xelNode.Attributes().Count();
             string[] keys = new string[configCount];
@@ -175,7 +175,7 @@ namespace Play.Studio.Module.Templates
             return new TemplateConfig(keys, values);
         }
 
-        public static T                     GetTemplate(string name)                    
+        public static T                                 GetTemplate(string name)                    
         {
             var index = s_templateNames.IndexOf(name);
             if (index > 0 && index < s_templates.Count)

@@ -2,7 +2,7 @@
 
 namespace Play.Studio.Module.Project
 {
-    public interface IProjectDirectory : IProjectItem
+    public interface IProjectFolder : IProjectItem
     {
         /// <summary>
         /// 目录地址
@@ -17,7 +17,7 @@ namespace Play.Studio.Module.Project
         /// <summary>
         /// 目录包含的项
         /// </summary>
-        IEnumerable<IProjectItem> Items { get; }
+        IList<IProjectItem> Items { get; }
 
         /// <summary>
         /// 根据类型获取项

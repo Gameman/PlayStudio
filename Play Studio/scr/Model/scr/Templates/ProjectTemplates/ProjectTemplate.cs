@@ -10,7 +10,7 @@ namespace Play.Studio.Module.Templates
     {
         public override string TemplatesRoot
         {
-            get { return "items"; }
+            get { return "project"; }
         }
 
         protected override void OnLoad(XElement xelDoc)

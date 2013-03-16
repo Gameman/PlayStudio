@@ -13,7 +13,10 @@ namespace Play.Studio.Module.Templates
         {
             get 
             {
-                return m_keyValues[key];
+                if (m_keyValues.ContainsKey(key))
+                    return m_keyValues[key];
+                else
+                    return string.Empty;
             }
         }
 
