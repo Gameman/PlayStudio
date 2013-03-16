@@ -6,13 +6,10 @@ namespace Play.Studio.Core.Command
 {
 	public class CommandEventArgs : EventArgs
 	{
-		/// Action that triggered the event.
 		ICommand m_action;
+		bool m_result;
 
-		/// Result of the action that triggered the event.
-		CommandResult m_result;
-
-		public CommandEventArgs( ICommand action, CommandResult result )
+		public CommandEventArgs( ICommand action, bool result )
 		{
 			m_action = action;
 			m_result = result;
@@ -23,7 +20,7 @@ namespace Play.Studio.Core.Command
 			get { return m_action; }
 		}
 
-		public CommandResult Result
+		public bool Result
 		{
 			get { return m_result; }
 		}

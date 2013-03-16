@@ -6,75 +6,23 @@ namespace Play.Studio.Core.Command
     /// <summary>
     /// 指令接口
     /// </summary>
-    public interface ICommand
+    public interface ICommand : System.Windows.Input.ICommand
     {
-        /// Event triggered when the action has been executed.
         event EventHandler<CommandEventArgs> ExecuteEvent;
-
-
-        /// Event triggered when the action has been undone.
         event EventHandler<CommandEventArgs> UndoEvent;
-
-        /// Event triggered when the action has been redone.
         event EventHandler<CommandEventArgs> RedoEvent;
 
-        /// Descriptive name of the action.
-        String Name
-        {
-            get;
-        }
+        string                  Name                { get; }
 
-        /// Effect of the action on the action history.
-        CommandHistoryOperation HistoryOperation
-        {
-            get;
-        }
+        CommandHistoryOperation HistoryOperation    { get; }
 
-        /// String containing a description of the latest error.
-        String FailureReason
-        {
-            get;
-        }
+        string                  FailureReason       { get; }
+        bool                    Registered          { get; }
+        bool                    Executed            { get; }
 
+        bool                    ExecuteWithResult(object param);
+        bool                    Undo();
 
-        bool Registered     { get; }
-
-        bool Executed       { get; }
-
-        /**
-         * Execute this action.
-         * 
-         * In case of failure, the string FailureReason should indicate the reason.
-         * 
-         * It will call ExecuteEvent or RedoEvent, depending on the circumstances.
-         * 
-         * @return Result of the operation indicating if it was successful or not.
-         */
-        CommandResult Execute(object param);
-
-        /**
-         * Undo this action
-         * 
-         * In case of failure, the string FailureReason should indicate the reason.
-         * 
-         * If successful it will call UndoEvent.
-         * 
-         * @return Result of the operation indicating if it was successful or not.
-         */
-        CommandResult Undo();
-
-
-        /**
-         * Query history operation combination is active.
-         * 
-         * All the flags queried in a single call need to be active
-         * for the function to return true.
-         * 
-         * @param historyOperationFlags Contains the flags to query.
-         * 
-         * @return True if action has all of the flags in historyOperationFlags
-         *		active, false otherwise.
-         */
         bool HasHistoryOperation(CommandHistoryOperation historyOperationFlag);
     }
 
@@ -89,9 +37,10 @@ namespace Play.Studio.Core.Command
 		bool m_executedSuccessfully;
 		bool m_executed;
 
-		public event EventHandler< CommandEventArgs > ExecuteEvent;
-		public event EventHandler< CommandEventArgs > UndoEvent;
-		public event EventHandler< CommandEventArgs > RedoEvent;
+        public event EventHandler                   CanExecuteChanged;
+		public event EventHandler<CommandEventArgs> ExecuteEvent;
+		public event EventHandler<CommandEventArgs> UndoEvent;
+		public event EventHandler<CommandEventArgs> RedoEvent;
 
 		public String Name                                                                          
 		{
@@ -151,38 +100,43 @@ namespace Play.Studio.Core.Command
 			return ( ( m_historyOperation & historyOperationFlags ) == historyOperationFlags );
 		}
 
-        public CommandResult Execute(object param)                                                              
+        public void Execute(object param)                                                              
 		{
-			if ( m_executedSuccessfully )
-			{
-				CommandResult result = OnRedo();
-
-				if ( RedoEvent != null )
-				{
-					RedoEvent( this, new CommandEventArgs( this, result ) );
-				}
-
-				return result;
-			}
-			else
-			{
-				CommandResult result = OnExecute(param);
-				
-				m_executed = true;
-				m_executedSuccessfully = ( result == CommandResult.SUCCESS );
-
-				if ( ExecuteEvent != null )
-				{
-					ExecuteEvent( this, new CommandEventArgs( this, result ) );
-				}
-
-				return result;
-			}
+            ExecuteWithResult(param);
 		}
 
-        public CommandResult Undo()                                                                 
+        public bool ExecuteWithResult(object param) 
+        {
+            if (m_executedSuccessfully)
+            {
+                bool result = OnRedo();
+
+                if (RedoEvent != null)
+                {
+                    RedoEvent(this, new CommandEventArgs(this, result));
+                }
+
+                return result;
+            }
+            else
+            {
+                bool result = OnExecute(param);
+
+                m_executed = true;
+                m_executedSuccessfully = (result == true);
+
+                if (ExecuteEvent != null)
+                {
+                    ExecuteEvent(this, new CommandEventArgs(this, result));
+                }
+
+                return result;
+            }
+        }
+
+        public bool Undo()                                                                 
 		{
-			CommandResult result = OnUndo();
+			bool result = OnUndo();
 
 			if ( UndoEvent != null )
 			{
@@ -192,19 +146,24 @@ namespace Play.Studio.Core.Command
 			return result;
 		}
 
-        protected abstract CommandResult OnExecute(object param);
+        protected abstract bool OnExecute(object param);
 
-		virtual protected CommandResult OnUndo()                                                    
+		virtual protected bool OnUndo()                                                    
 		{
 			FailureReason = "Undo not supported for " + Name;
-			return CommandResult.FAILURE;
+            return false;
 		}
 
-        protected virtual CommandResult OnRedo()                                                    
+        protected virtual bool OnRedo()                                                    
 		{
 			FailureReason = "Redo not supported for " + Name;
-			return CommandResult.FAILURE;
+            return false;
 		}
+
+        public virtual bool CanExecute(object parameter)
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -212,22 +171,27 @@ namespace Play.Studio.Core.Command
     /// </summary>
     public class FuncCommand : Command 
     {
-        private Func<object, CommandResult> m_function;
+        private Func<object, bool> m_function;
 
-        public FuncCommand(Func<object, CommandResult> function)
+        public FuncCommand(Func<object, bool> function)
             : this(function.Target.ToString(), function)
         {
         }
 
-        public FuncCommand(string name, Func<object, CommandResult> function)
+        public FuncCommand(string name, Func<object, bool> function)
             : base(name)
         {
             m_function = function;
         }
 
-        protected override CommandResult OnExecute(object param)
+        protected override bool OnExecute(object param)
         {
             return m_function(param);
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            return true;
         }
     }
 

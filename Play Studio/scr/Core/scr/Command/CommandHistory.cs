@@ -111,21 +111,21 @@ namespace Play.Studio.Core.Command
 		 * 
 		 * @return Result from executing the action.
 		 */ 
-		public CommandResult ExecuteAction( ICommand action, object param )
+		public bool ExecuteAction( ICommand action, object param )
 		{
 			if ( action == null )
 			{
-				return CommandResult.FAILURE;
+				return false;
 			}
 
 			if ( action.Executed )
 			{
-				return CommandResult.FAILURE;
+				return false;
 			}
 
-			CommandResult result = action.Execute(param);
+			bool result = (action as Play.Studio.Core.Command.ICommand).ExecuteWithResult(param);
 
-			if ( result == CommandResult.SUCCESS )
+			if ( result == true )
 			{
 				m_redoableActions.Clear();
 
@@ -159,18 +159,18 @@ namespace Play.Studio.Core.Command
 		 * 
 		 * @return Result from undoing the action.
 		 */
-		public CommandResult UndoAction()
+		public bool UndoAction()
 		{
 			if ( ! CanUndoAction() )
 			{
-				return CommandResult.FAILURE;
+				return false;
 			}
 
 			ICommand action = GetActionToUndo();
 
-			CommandResult result = action.Undo();
+			bool result = action.Undo();
 
-			if ( result == CommandResult.SUCCESS )
+			if ( result == true )
 			{
 				RemoveLast( m_undoableActions );
 				m_redoableActions.Add( action );
@@ -185,7 +185,7 @@ namespace Play.Studio.Core.Command
 
 			// We check PASS_THROUGH at the end because we want
 			// events called individually for each action undone.
-			if ( result == CommandResult.SUCCESS )
+			if ( result == true )
 			{
 				if ( action.HasHistoryOperation( CommandHistoryOperation.PASS_THROUGH ) )
 				{
@@ -211,18 +211,20 @@ namespace Play.Studio.Core.Command
 		 * 
 		 * @return Result from executing the action.
 		 */
-		public CommandResult RedoAction()
+		public bool RedoAction()
 		{
 			if ( ! CanRedoAction() )
 			{
-				return CommandResult.FAILURE;
+				return false;
 			}
 
 			ICommand action = GetActionToRedo();
 
-			CommandResult result = action.Execute(null);
+			//bool result = action.Execute(null);
 
-			if ( result == CommandResult.SUCCESS )
+            bool result = (action as Play.Studio.Core.Command.ICommand).ExecuteWithResult(null);
+
+			if ( result == true )
 			{
 				RemoveLast( m_redoableActions );
 
@@ -246,7 +248,7 @@ namespace Play.Studio.Core.Command
 
 			// We check PASS_THROUGH at the end because we want
 			// events called individually for each action redone.
-			if ( result == CommandResult.SUCCESS )
+			if ( result == true )
 			{
 				if ( action.HasHistoryOperation( CommandHistoryOperation.PASS_THROUGH ) )
 				{
@@ -481,7 +483,7 @@ namespace Play.Studio.Core.Command
 			}
 		}
 
-		private void OnActionExecuted( ICommand action, CommandResult result )
+		private void OnActionExecuted( ICommand action, bool result )
 		{
 			if ( ActionExecuted != null )
 			{
@@ -489,7 +491,7 @@ namespace Play.Studio.Core.Command
 			}
 		}
 
-		private void OnActionUndone( ICommand action, CommandResult result )
+		private void OnActionUndone( ICommand action, bool result )
 		{
 			if ( ActionUndone != null )
 			{
@@ -497,7 +499,7 @@ namespace Play.Studio.Core.Command
 			}
 		}
 
-		private void OnActionRedone( ICommand action, CommandResult result )
+		private void OnActionRedone( ICommand action, bool result )
 		{
 			if ( ActionRedone != null )
 			{

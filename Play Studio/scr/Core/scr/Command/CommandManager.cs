@@ -32,20 +32,31 @@ namespace Play.Studio.Core.Command
         /// <summary>
         /// 执行指令
         /// </summary>
-        public static CommandResult Execute(string commandStr, object param) 
+        public static bool Execute(string commandStr, object param) 
         {
             if (s_registerCommands.ContainsKey(commandStr))
                 return Execute(s_registerCommands[commandStr], param);
             else
-                return CommandResult.FAILURE;
+                return false;
         }
 
         /// <summary>
         /// 执行指令
         /// </summary>
-        public static CommandResult Execute(ICommand command, object param) 
+        public static bool Execute(ICommand command, object param) 
         {
             return s_generalCommandHistory.ExecuteAction(command, param);
+        }
+
+        /// <summary>
+        /// 获得指令
+        /// </summary>
+        public static ICommand GetCommand(string commandName) 
+        {
+            if (s_registerCommands.ContainsKey(commandName))
+                return s_registerCommands[commandName];
+            else
+                return null;
         }
 
     }
