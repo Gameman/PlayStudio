@@ -117,8 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="test" xml:space="preserve">
-    <value>测试文字</value>
-    <comment>muname</comment>
+  <data name="WorkbenchTopMenuFile" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="WorkbenchTopMenuFileNew" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="WorkbenchTopMenuFileNewProject" xml:space="preserve">
+    <value>项目</value>
+  </data>
+  <data name="WorkbenchTopMenuFileOpen" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="WorkbenchTopMenuFileOpenProject" xml:space="preserve">
+    <value>项目</value>
   </data>
 </root>

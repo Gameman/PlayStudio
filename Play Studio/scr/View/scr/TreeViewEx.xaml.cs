@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -627,7 +628,7 @@ namespace Play.Studio.View
         /// <summary>
         /// 获取子节点列表
         /// </summary>
-        public TreeViewExNodeCollection Nodes 
+        public virtual TreeViewExNodeCollection Nodes 
         { 
             get { return _nodes; }
             internal set 
@@ -640,25 +641,25 @@ namespace Play.Studio.View
         /// <summary>
         /// 能否拖动
         /// </summary>
-        public bool AllowDrop
+        public virtual bool AllowDrop
         {
             get { return _allowDrop; }
             protected set { _allowDrop = value; }
         }
 
-        public bool AllowCopy 
+        public virtual bool AllowCopy 
         {
             get { return _allowCopy; }
             protected set { _allowCopy = value; }
         }
 
-        public bool AllowCut 
+        public virtual bool AllowCut 
         {
             get { return _allowCut; }
             protected set { _allowCut = value; }
         }
 
-        public bool AllowDelete 
+        public virtual bool AllowDelete 
         {
             get { return _allowDelete; }
             protected set { _allowDelete = value; }
@@ -750,12 +751,18 @@ namespace Play.Studio.View
         IDictionary<string, TreeViewExNode> _buffer;
 
         public TreeViewExNodeCollection() 
-            : base()
+            : base()                                                
         {
             _buffer = new Dictionary<string, TreeViewExNode>();
         }
 
-        public new void Add(TreeViewExNode item) 
+        public TreeViewExNodeCollection(IEnumerable<TreeViewExNode> elements) 
+            : base(elements)
+        {
+            _buffer = elements.ToDictionary<TreeViewExNode, string>(X => X.Content);
+        }
+
+        public new void Add(TreeViewExNode item)                    
         {
             if (BeforeAdded != null) BeforeAdded(item, null);
             base.Add(item);
@@ -764,14 +771,14 @@ namespace Play.Studio.View
             if (AfterAdded != null) AfterAdded(item, null);
         }
 
-        public new void Remove(TreeViewExNode item) 
+        public new void Remove(TreeViewExNode item)                 
         {
             if (BeforeRemoved != null) BeforeRemoved(item, null);
             base.Remove(item);
             if (AfterRemoved != null) AfterRemoved(item, null);
         }
 
-        public bool ContainsKey(string key) 
+        public bool ContainsKey(string key)                         
         {
             if (ComputeNodeByContent(key) != null)
                 return true;
@@ -779,7 +786,7 @@ namespace Play.Studio.View
                 return false;
         }
 
-        public TreeViewExNode this[string content] 
+        public TreeViewExNode this[string content]                  
         {
             get {
                 return ComputeNodeByContent(content);
@@ -790,18 +797,18 @@ namespace Play.Studio.View
             }
         }
 
-        public void Sort()
+        public void Sort()                                          
         {
             Sort(Comparer<TreeViewExNode>.Default);
         }
 
-        public void Cover(TreeViewExNodeCollection nc) 
+        public void Cover(TreeViewExNodeCollection nc)              
         {
             for (int i = 0; i < this.Count; i++)
                 nc.Add(this[i]);
         }
 
-        public void Sort(IComparer<TreeViewExNode> comparer)
+        public void Sort(IComparer<TreeViewExNode> comparer)        
         {
             int i, j;
             TreeViewExNode index;
@@ -818,7 +825,7 @@ namespace Play.Studio.View
             }
         }
 
-        private TreeViewExNode ComputeNodeByContent(string content)
+        private TreeViewExNode ComputeNodeByContent(string content) 
         {
             // 检查缓冲区
             if (_buffer.ContainsKey(content)) {

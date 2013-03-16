@@ -61,11 +61,47 @@ namespace Play.Studio.Workbench.Properties {
         }
         
         /// <summary>
-        ///   查找类似 测试文字 的本地化字符串。
+        ///   查找类似 文件 的本地化字符串。
         /// </summary>
-        internal static string test {
+        internal static string WorkbenchTopMenuFile {
             get {
-                return ResourceManager.GetString("test", resourceCulture);
+                return ResourceManager.GetString("WorkbenchTopMenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 新建 的本地化字符串。
+        /// </summary>
+        internal static string WorkbenchTopMenuFileNew {
+            get {
+                return ResourceManager.GetString("WorkbenchTopMenuFileNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 项目 的本地化字符串。
+        /// </summary>
+        internal static string WorkbenchTopMenuFileNewProject {
+            get {
+                return ResourceManager.GetString("WorkbenchTopMenuFileNewProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 打开 的本地化字符串。
+        /// </summary>
+        internal static string WorkbenchTopMenuFileOpen {
+            get {
+                return ResourceManager.GetString("WorkbenchTopMenuFileOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 项目 的本地化字符串。
+        /// </summary>
+        internal static string WorkbenchTopMenuFileOpenProject {
+            get {
+                return ResourceManager.GetString("WorkbenchTopMenuFileOpenProject", resourceCulture);
             }
         }
     }

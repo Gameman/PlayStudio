@@ -13,6 +13,8 @@ using Play.Studio.Core;
 using Play.Studio.Core.Logging;
 using Play.Studio.Module.Resource;
 using Play.Studio.Module.Templates;
+using Play.Studio.Workbench.Utility;
+using Play.Studio.Core.Services;
 
 namespace Play.Studio.Workbench
 {
@@ -24,13 +26,40 @@ namespace Play.Studio.Workbench
     {
         public Workbench()
         {
+            Current = this;
+
+
             Resource.Register<MenuTemplate>(".uit");
-            
 
 
+            CommandCenter.Initialization();
 
             InitializeComponent();
         }
+
+        #region Show Window
+
+        public void ShowWindow(Type type) 
+        {
+            // 查找到layout中是否存在
+            var layout = dockManager.Layout.Descendents().OfType<LayoutAnchorable>().FirstOrDefault(X => X.Content != null && X.Content.GetType().Equals(type));
+            if (layout == null)
+            {
+                var window = TypeService.CreateInstance(type) as Control;
+
+                layout = new LayoutAnchorable();
+                layout.Content  = window;
+                layout.Title    = window.Tag.ToString();
+
+              
+                layout.AddToLayout(dockManager, AnchorableShowStrategy.Left);
+            }
+
+            // 将layout添加到root中
+            layout.Float();
+        }
+
+        #endregion
 
         #region Header Methods
 
@@ -69,12 +98,12 @@ namespace Play.Studio.Workbench
         #region Thumb Methods
 
         private double HeadWidth { get { return this.Width - WindowBuutonsPlaceholder.Width; } }
-        private void Header_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void Header_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)                         
         {
             if (e.LeftButton == MouseButtonState.Pressed && WindowState == WindowState.Normal)
                 this.DragMove();
         }
-        private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)        
         {
             if (WindowState == WindowState.Normal)
             {
@@ -150,7 +179,7 @@ namespace Play.Studio.Workbench
 
         #endregion
 
-        private void OnLayoutRootPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnLayoutRootPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)   
         {
             var activeContent = ((LayoutRoot)sender).ActiveContent;
             if (e.PropertyName == "ActiveContent")
@@ -159,7 +188,7 @@ namespace Play.Studio.Workbench
             }
         }
 
-        private void OnLoadLayout(object sender, RoutedEventArgs e)
+        private void OnLoadLayout(object sender, RoutedEventArgs e)                                                 
         {
             var currentContentsList = dockManager.Layout.Descendents().OfType<LayoutContent>().Where(c => c.ContentId != null).ToArray();
 
@@ -175,7 +204,7 @@ namespace Play.Studio.Workbench
                 serializer.Deserialize(stream);
         }
 
-        private void OnSaveLayout(object sender, RoutedEventArgs e)
+        private void OnSaveLayout(object sender, RoutedEventArgs e)                                                 
         {
             string fileName = (sender as MenuItem).Header.ToString();
             var serializer = new XmlLayoutSerializer(dockManager);
@@ -183,7 +212,7 @@ namespace Play.Studio.Workbench
                 serializer.Serialize(stream);
         }
 
-        private void OnShowWinformsWindow(object sender, RoutedEventArgs e)
+        private void OnShowWinformsWindow(object sender, RoutedEventArgs e)                                         
         {
             var winFormsWindow = dockManager.Layout.Descendents().OfType<LayoutAnchorable>().Single(a => a.ContentId == "WinFormsWindow");
             if (winFormsWindow.IsHidden)
@@ -194,7 +223,7 @@ namespace Play.Studio.Workbench
                 winFormsWindow.AddToLayout(dockManager, AnchorableShowStrategy.Bottom | AnchorableShowStrategy.Most);
         }
 
-        private void AddTwoDocuments_click(object sender, RoutedEventArgs e)
+        private void AddTwoDocuments_click(object sender, RoutedEventArgs e)                                        
         {
             var firstDocumentPane = dockManager.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
             if (firstDocumentPane != null)
@@ -219,7 +248,7 @@ namespace Play.Studio.Workbench
 
         }
 
-        private void OnShowToolWindow1(object sender, RoutedEventArgs e)
+        private void OnShowToolWindow1(object sender, RoutedEventArgs e)                                            
         {
             var toolWindow1 = dockManager.Layout.Descendents().OfType<LayoutAnchorable>().Single(a => a.ContentId == "toolWindow1");
             if (toolWindow1.IsHidden)
@@ -230,36 +259,36 @@ namespace Play.Studio.Workbench
                 toolWindow1.AddToLayout(dockManager, AnchorableShowStrategy.Bottom | AnchorableShowStrategy.Most);
         }
 
-        private void dockManager_DocumentClosing(object sender, DocumentClosingEventArgs e)
+        private void dockManager_DocumentClosing(object sender, DocumentClosingEventArgs e)                         
         {
             if (MessageBox.Show("Are you sure you want to close the document?", "AvalonDock Sample", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 e.Cancel = true;
         }
 
-        private void OnDumpToConsole(object sender, RoutedEventArgs e)
+        private void OnDumpToConsole(object sender, RoutedEventArgs e)                                              
         {
 #if DEBUG
             //dockManager.Layout.ConsoleDump(0);
 #endif
         }
 
-        private void OnReloadManager(object sender, RoutedEventArgs e)
+        private void OnReloadManager(object sender, RoutedEventArgs e)                                              
         {
         }
 
-        private void OnUnloadManager(object sender, RoutedEventArgs e)
+        private void OnUnloadManager(object sender, RoutedEventArgs e)                                              
         {
             if (layoutRoot.Children.Contains(dockManager))
                 layoutRoot.Children.Remove(dockManager);
         }
 
-        private void OnLoadManager(object sender, RoutedEventArgs e)
+        private void OnLoadManager(object sender, RoutedEventArgs e)                                                
         {
             if (!layoutRoot.Children.Contains(dockManager))
                 layoutRoot.Children.Add(dockManager);
         }
 
-        private void OnToolWindow1Hiding(object sender, System.ComponentModel.CancelEventArgs e)
+        private void OnToolWindow1Hiding(object sender, System.ComponentModel.CancelEventArgs e)                    
         {
             if (MessageBox.Show("Are you sure you want to hide this tool?", "AvalonDock", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 e.Cancel = true;
@@ -271,8 +300,10 @@ namespace Play.Studio.Workbench
         public static void Startup() 
         {
             App app = new App();
-            app.Run(new Workbench());
+            app.Run(Current = new Workbench());
         }
+
+        public static Workbench Current { get; private set; }
 
         #endregion
     }

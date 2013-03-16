@@ -86,8 +86,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <None Include="scr\ProjectService\ProjectService.cs" />
-    <None Include="scr\ProjectService\ProjectServiceException.cs" />
+    <Compile Include="scr\Project\Project.cs" />
+    <Compile Include="scr\Project\ProjectFile.cs" />
+    <Compile Include="scr\Project\ProjectFolder.cs" />
+    <Compile Include="scr\Project\ProjectItem.cs" />
+    <Compile Include="scr\Project\ProjectReference.cs" />
+    <Compile Include="scr\Project\ProjectReferenceFolder.cs" />
+    <Compile Include="scr\Project\Solution.cs" />
+    <Compile Include="scr\Project\ProjectHost.cs" />
+    <Compile Include="scr\Utility\CommandCenter.cs" />
     <Compile Include="scr\Workbench.xaml.cs">
       <DependentUpon>Workbench.xaml</DependentUpon>
       <SubType>Code</SubType>

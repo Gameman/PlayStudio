@@ -1,11 +1,17 @@
-﻿<UserControl x:Class="Play.Studio.View.CategoryTree"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl xmlns:my="clr-namespace:Play.Studio.View"  x:Class="Play.Studio.View.CategoryTree"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="274" d:DesignWidth="269">
+             mc:Ignorable="d" d:DesignHeight="173" d:DesignWidth="291">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="122*" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="166*" />
+        </Grid.ColumnDefinitions>
+        <my:TreeViewEx x:Name="_treeViewEx1" Margin="4,4,0,4" SelectedItemChanged="_treeViewEx1_SelectedItemChanged" />
+        <ListBox x:Name="_listView1" Grid.Column="2" Margin="0,4,4,4" />
     </Grid>
 </UserControl>
+

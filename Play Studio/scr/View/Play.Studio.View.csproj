@@ -49,6 +49,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="scr\Image\ImageCenter.cs" />
     <Compile Include="scr\PluginExplorer.xaml.cs">
       <DependentUpon>PluginExplorer.xaml</DependentUpon>
     </Compile>

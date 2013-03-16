@@ -94,7 +94,6 @@
                         </avalonDock:LayoutAnchorablePane>
                     </avalonDock:LayoutAnchorablePaneGroup>
                 </avalonDock:LayoutPanel>
-
                 <avalonDock:LayoutRoot.LeftSide>
                     <avalonDock:LayoutAnchorSide>
                         <avalonDock:LayoutAnchorGroup>

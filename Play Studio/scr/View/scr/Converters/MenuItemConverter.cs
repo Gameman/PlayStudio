@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using Play.Studio.Module.Templates;
+using Play.Studio.Core.Command;
 
 namespace Play.Studio.View.Converters
 {
@@ -26,7 +27,9 @@ namespace Play.Studio.View.Converters
         private static MenuItem OnConvert(MenuTemplateUnit unit) 
         {
             var item = new MenuItem();
-            item.Header = unit.Header;
+            item.Header             = unit.Header;
+            item.Command            = CommandManager.GetCommand(unit.Command);
+            item.CommandParameter   = unit.CommandParameter;
             foreach (var sub in unit.Subs)
             {
                 if (sub.Header == "-")

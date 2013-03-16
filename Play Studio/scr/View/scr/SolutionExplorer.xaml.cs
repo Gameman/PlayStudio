@@ -7,7 +7,7 @@ namespace Play.Studio.View
     /// <summary>
     /// SolutionExplorer.xaml 的交互逻辑
     /// </summary>
-    public partial class SolutionExplorer : UserControl
+    public partial class SolutionExplorer : UserControl         
     {
         public SolutionExplorer()
         {
@@ -82,9 +82,6 @@ namespace Play.Studio.View
                 args.Handle = true;
                 return;
             }
-
-            //CommandServer.Execute(DefaultCommand.System_NodeFileOperation,
-            //    overWrite, args);
         }
 
         private void TreeView_ContentConflictEvent(object sender, TreeViewExNodeEventArgs args)           
@@ -96,18 +93,33 @@ namespace Play.Studio.View
 
     public class SolutionExplorerNode : TreeViewExNode
     {
-        public IProjectItem ProjectItem
+        public IProjectItem ProjectItem                         
         {
             get;
             private set;
         }
 
-        public SolutionExplorerNode(IProjectItem projectItem) 
+        public override TreeViewExNodeCollection Nodes          
+        {
+            get
+            {
+                return base.Nodes;
+            }
+            internal set
+            {
+                base.Nodes = value;
+            }
+        }
+
+        public SolutionExplorerNode()                           
+        {
+            ProjectItem = this as IProjectItem;
+        }
+
+        public SolutionExplorerNode(IProjectItem projectItem)   
         {
             ProjectItem = projectItem;
         }
-
-
     }
 
 
