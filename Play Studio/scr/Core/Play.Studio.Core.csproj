@@ -46,7 +46,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
@@ -73,16 +75,18 @@
     <Compile Include="scr\Command\Logging\Logger.cs" />
     <Compile Include="scr\Command\Messaging\Attributes.cs" />
     <Compile Include="scr\Command\Messaging\Meesager.cs" />
+    <Compile Include="scr\Command\Property\Property.cs" />
     <Compile Include="scr\Command\Settings\Attributes.cs" />
     <Compile Include="scr\Command\Settings\Setting.cs" />
     <Compile Include="scr\Utility\CallbackOnDispose.cs" />
+    <Compile Include="scr\Utility\Collections\InList.cs" />
     <Compile Include="scr\Utility\Compressor.cs" />
     <Compile Include="scr\Utility\OperateMode.cs" />
     <Compile Include="scr\Utility\SeperateAppDomainAssemblyLoader.cs" />
     <None Include="scr\Utility\Extensions\GraphicsEx.cs" />
     <Compile Include="scr\Utility\Extensions\ObjectExtensions.cs" />
     <Compile Include="scr\Utility\ConvertUtility.MD5.cs" />
-    <Compile Include="scr\Utility\StringParser.cs" />
+    <Compile Include="scr\Utility\StringHelper.cs" />
     <Compile Include="scr\Utility\TemporaryFolder.cs" />
     <Compile Include="scr\Services\FileService\FileService.TemporaryFolder.cs" />
     <Compile Include="scr\Services\TypeService\ReflectionAccessor.cs" />

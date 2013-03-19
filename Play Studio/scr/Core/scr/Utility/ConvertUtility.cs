@@ -27,7 +27,7 @@ namespace Play.Studio.Core.Utility
         /// <summary>
         /// 将 stream 转成 string
         /// </summary>
-        public static string ToString(this Stream stream)
+        public static string ToString1(this Stream stream)
         {
             byte[] data = ToBytes(stream);
             return Convert.ToBase64String(data);

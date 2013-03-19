@@ -7,5 +7,8 @@ namespace Play.Studio.Core.Messaging
 {
     class Meesager
     {
+        public static void ShowError(string str) 
+        {
+        }
     }
 }
