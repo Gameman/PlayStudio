@@ -3,10 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Play.Studio.Core.Services;
-using System.Threading.Tasks;
 using Play.Studio.Module.Resource;
-using Play.Studio.Core.Utility;
-using System.Text.RegularExpressions;
 
 namespace Play.Studio.Module.Templates
 {
@@ -91,7 +88,7 @@ namespace Play.Studio.Module.Templates
         /// <summary>
         /// 更新模板
         /// </summary>
-            internal static void                        UpdateTemplates()                           
+        internal static void                            UpdateTemplates(params object[] args)                           
         {
             var templateType = typeof(T);
             var searchTemplate =  TypeService.CreateInstance(templateType) as Template<T>;
@@ -103,23 +100,23 @@ namespace Play.Studio.Module.Templates
             // 生成模板集合
             s_templateNames = new ReadOnlyCollection<string>(templatePaths);
             s_templates = new ReadOnlyCollection<T>(
-                templatePaths.Select(X => Resource<T>.Read(templateType, new Uri(X, UriType.Absolute))).Where(X => X != null).OrderBy(X => X.Config.Contains("index") ? int.Parse(X.Config["index"]) : int.MaxValue).ToArray());
+                templatePaths.Select(X => Resource<T>.Read(templateType, new Uri(X, UriType.Absolute), args)).Where(X => X != null).OrderBy(X => X.Config.Contains("index") ? int.Parse(X.Config["index"]) : int.MaxValue).ToArray());
+        }
+
+        /// <summary>
+        /// 预加载
+        /// </summary>
+        protected virtual TextReader                    PreLoad(Stream stream)                      
+        {
+            return new StreamReader(stream);
         }
 
         protected static T                              Load(Stream stream)                         
         {
-            // 替换文字
-            var sr = new StreamReader(stream);
-            var xmlTxt = sr.ReadToEnd();
-                                                                 // @\{.*?\} 
-            Parallel.ForEach<Capture>(StringParser.Parse(xmlTxt, "@+{[^}]+}").GroupBy(X => X.Value).Where(g => g.Count() == 1)
-                    .Select(g => g.ElementAt(0)), (o, s) => 
-            {
-                xmlTxt = xmlTxt.Replace(o.Value, Resource.Resource.Read(o.Value.TrimStart('@', '{').TrimEnd('}')).ToString());
-            });
-            
+            T template = new T();
+           
             // 加载模板
-            XElement templateNode = XElement.Load(new StringReader(xmlTxt)); //.Load(fullName);
+            XElement templateNode = XElement.Load(template.PreLoad(stream)); //.Load(fullName);
             if (templateNode == null)
             {
                 //MessageService.ShowException(new TemplateLoadException(fullName));
@@ -129,7 +126,6 @@ namespace Play.Studio.Module.Templates
             XElement cfgNode                    = templateNode.Element(XName.Get("Config", templateNode.Name.NamespaceName));
             XElement desNode                    = templateNode.Element(XName.Get("Description", templateNode.Name.NamespaceName));
 
-            T template = new T();
             //template.FullName                   = fullName;
             template.Author                     = templateNode.Attribute(XName.Get("author", templateNode.Name.NamespaceName)).Value;
             template.Version                    = templateNode.Attribute(XName.Get("version", templateNode.Name.NamespaceName)).Value;
@@ -144,11 +140,6 @@ namespace Play.Studio.Module.Templates
             template.OnLoad(templateNode);
 
             return template;
-        }
-
-        protected internal override void                OnSave(Stream stream, params object[] args) 
-        {
-            throw new System.NotImplementedException();
         }
 
         protected internal override object              OnRead(Stream stream)                       

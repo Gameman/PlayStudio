@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Play.Studio.Module.Project
 {
@@ -17,7 +18,7 @@ namespace Play.Studio.Module.Project
         /// <summary>
         /// 目录包含的项
         /// </summary>
-        IList<IProjectItem> Items { get; }
+        IList Items { get; }
 
         /// <summary>
         /// 根据类型获取项

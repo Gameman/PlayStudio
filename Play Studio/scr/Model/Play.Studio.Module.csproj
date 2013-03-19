@@ -32,10 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -44,6 +48,10 @@
     <Compile Include="scr\Addins\AddinState.cs" />
     <Compile Include="scr\Addins\Attributes.cs" />
     <Compile Include="scr\Addins\Exceptions.cs" />
+    <Compile Include="scr\Language\Exceptions.cs" />
+    <Compile Include="scr\Language\LanguagePackage.cs" />
+    <Compile Include="scr\Language\LanguageResource.cs" />
+    <Compile Include="scr\Language\Languages.cs" />
     <Compile Include="scr\Project\IProject.cs" />
     <Compile Include="scr\Project\IProjectFolder.cs" />
     <Compile Include="scr\Project\IProjectFile.cs" />
@@ -56,6 +64,7 @@
     <Compile Include="scr\Resource\Resource.cs" />
     <Compile Include="scr\Resource\Exceptions.cs" />
     <Compile Include="scr\Resource\ResourceDomain.cs" />
+    <Compile Include="scr\Resource\ResourceManager.cs" />
     <Compile Include="scr\Resource\ResourceName.cs" />
     <Compile Include="scr\Resource\Uri.cs" />
     <Compile Include="scr\Templates\ProjectTemplates\BaseProjectTemplate.cs" />
@@ -69,6 +78,9 @@
     <Compile Include="scr\Templates\UserInterfaceTemplates\BaseUserInterfaceTemplate.cs" />
     <Compile Include="scr\Templates\UserInterfaceTemplates\MenuTemplate.cs" />
     <Compile Include="scr\Templates\UserInterfaceTemplates\ExpandControlType.cs" />
+    <Compile Include="scr\Views\CategoryTreeModules.cs" />
+    <Compile Include="scr\Views\SoultionExplorerModules.cs" />
+    <Compile Include="scr\Views\TreeViewExModules.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Play.Studio.Core.csproj">

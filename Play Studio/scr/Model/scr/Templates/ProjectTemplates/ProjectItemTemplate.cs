@@ -1,4 +1,7 @@
 ﻿using System.Xml.Linq;
+using System.IO;
+using System.Collections.Generic;
+
 
 namespace Play.Studio.Module.Templates
 {
@@ -14,6 +17,11 @@ namespace Play.Studio.Module.Templates
 
         protected override void OnLoad(XElement xelDoc)
         {
+        }
+
+        protected override void OnWriteTo(string fileName, Dictionary<string, string> replaceParams = null)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

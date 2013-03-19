@@ -8,10 +8,5 @@ namespace Play.Studio.Module.Addins
         {
             throw new System.NotImplementedException();
         }
-
-        protected internal override void OnSave(Stream stream, params object[] args)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

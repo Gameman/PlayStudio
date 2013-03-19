@@ -5,6 +5,7 @@ using System.Threading;
 using Play.Studio.Core.Command.TaskPool;
 using Play.Studio.Core.Services;
 using Play.Studio.Module.Addins;
+using Play.Studio.Module.Language;
 
 namespace Play.Studio.Module.Resource
 {
@@ -39,6 +40,13 @@ namespace Play.Studio.Module.Resource
     /// </summary>
     public abstract class Resource : IResource                                                                                                  
     {
+        static Resource() 
+        {
+            // 注册一些通用资源
+            Register<LanguageResource>(".lang");
+        }
+
+
         private static Dictionary<string, Type>     m_extResourceType           = new Dictionary<string, Type>();
         private static Dictionary<int, Resource>    m_currentThreadResources    = new Dictionary<int, Resource>();
         public static Resource Current                                                                                                          
@@ -107,6 +115,10 @@ namespace Play.Studio.Module.Resource
             var resource = TypeService.CreateInstance(resourceType, args) as Resource;
             resource.Uri = uri;
             resource.Name = ResourceName.From(uri);
+
+            // 在资源管理器内注册资源
+            ResourceManager.Register(resource);
+
             return resource;
         }
 
@@ -160,28 +172,6 @@ namespace Play.Studio.Module.Resource
         }
 
         /// <summary>
-        /// 保存
-        /// </summary>
-        public static void                  Save(object sender, Uri uri, params object[] args)                                                  
-        {
-            (sender as Resource).OnSave(uri, args);
-        }
-
-        /// <summary>
-        /// 异步保存
-        /// </summary>
-        public static void                  AsyncSave(object sender, Uri uri, Action<object> onHaveRead, params object[] args)                  
-        {
-            ActionTask<object, Uri, object[]> task = new ActionTask<object, Uri, object[]>(Save);
-            task.Completed += t =>
-            {
-                if (onHaveRead != null)
-                    onHaveRead(t.Result);
-            };
-            task.Invoke(sender, uri, args);
-        }
-
-        /// <summary>
         /// 当读取资源
         /// </summary>
         protected internal object           OnRead()                                                               
@@ -200,7 +190,7 @@ namespace Play.Studio.Module.Resource
                         }
                         else
                         {
-                            return (m_result = OnRead(stream));
+                            return m_result = OnRead(stream);
                         }
                     }
                 }
@@ -216,19 +206,6 @@ namespace Play.Studio.Module.Resource
         }
 
         protected internal abstract object  OnRead(Stream stream);
-
-        /// <summary>
-        /// 保存
-        /// </summary>
-        protected internal void             OnSave(Uri uri, params object[] args)                                                               
-        {
-            OnSave(new FileStream(uri.FileName, FileMode.Open, FileAccess.ReadWrite), args);
-        }
-
-        /// <summary>
-        /// 保存
-        /// </summary>
-        protected internal abstract void    OnSave(Stream stream, params object[] args);
     }
 
     /// <summary>
@@ -266,28 +243,6 @@ namespace Play.Studio.Module.Resource
         public static void                  AsyncRead(Type resourceType, Uri uri, Action<T> onHaveRead, params object[] args)                   
         {
             Resource.AsyncRead(resourceType, uri, onHaveRead as Action<object>, args);
-        }
-
-        /// <summary>
-        /// 保存
-        /// </summary>
-        public static void                  Save(T sender, Uri uri, params object[] args)                                                       
-        {
-            Save(sender, uri, args);
-        }
-        
-        /// <summary>
-        /// 异步保存
-        /// </summary>
-        public static void                  AsyncSave(T sender, Uri uri, Action<T> onHaveRead, params object[] args)                            
-        {
-            ActionTask<T, Uri, object[]> task = new ActionTask<T, Uri, object[]>(Save);
-            task.Completed += t =>
-            {
-                if (onHaveRead != null)
-                    onHaveRead((T)t.Result);
-            };
-            task.Invoke(sender, uri, args);
         }
     }
 

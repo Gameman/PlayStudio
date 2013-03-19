@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Resources;
 using Play.Studio.Core;
 using Play.Studio.Module.Resource;
+using ResourceManager = System.Resources.ResourceManager;
 
 namespace Play.Studio.Module.Addins
 {

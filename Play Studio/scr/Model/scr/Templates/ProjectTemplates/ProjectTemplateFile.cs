@@ -6,14 +6,9 @@
     public struct ProjectTemplateFile
     {
         /// <summary>
-        /// 完整路径名
+        /// 计入
         /// </summary>
-        public string FullName  { get; set; }
-
-        /// <summary>
-        /// 语言
-        /// </summary>
-        public string Language  { get; set; }
+        public string Include   { get; set; }
 
         /// <summary>
         /// 模板文件内容

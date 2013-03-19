@@ -2,6 +2,10 @@
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.IO;
+using System.Text.RegularExpressions;
+using Play.Studio.Core.Utility;
 
 namespace Play.Studio.Module.Templates
 {
@@ -36,6 +40,21 @@ namespace Play.Studio.Module.Templates
                 }
             }
             Supports = supportList.ToArray();
+        }
+
+        protected override TextReader PreLoad(Stream stream)
+        {
+            // 替换文字
+            var sr = new StreamReader(stream);
+            var xmlTxt = sr.ReadToEnd();
+            // @\{.*?\} 
+            Parallel.ForEach<Capture>(StringHelper.Parse(xmlTxt, "@+{[^}]+}").GroupBy(X => X.Value).Where(g => g.Count() == 1)
+                    .Select(g => g.ElementAt(0)), (o, s) =>
+                    {
+                        xmlTxt = xmlTxt.Replace(o.Value, Resource.Resource.Read(o.Value.TrimStart('@', '{').TrimEnd('}')).ToString());
+                    });
+
+            return new StringReader(xmlTxt);
         }
 
         public static T[] GetTemplate(ExpandControlType type)         

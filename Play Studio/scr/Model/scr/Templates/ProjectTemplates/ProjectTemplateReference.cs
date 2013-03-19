@@ -13,6 +13,6 @@
         /// <summary>
         /// 引用路径
         /// </summary>
-        public string ReferencePath { get; set; }
+        public string Include { get; set; }
     }
 }
