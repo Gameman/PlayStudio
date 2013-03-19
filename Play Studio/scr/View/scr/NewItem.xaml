@@ -1,11 +1,23 @@
 ﻿<UserControl x:Class="Play.Studio.View.NewItem"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:my="clr-namespace:Play.Studio.View"
+        mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="216" d:DesignWidth="412">
+    <Border BorderThickness="3" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <my:CategoryTree x:Name="_category" Grid.Row="0" OnSelectedItemChanged="_category_OnSelectedItemChanged" />
+            <DockPanel Grid.Row="1" Margin="0,3,0,3" >
+                <Label Content="Name:" VerticalAlignment="Center" Margin="3,0,0,0" />
+                <TextBox x:Name="nameBox" MinWidth="120" HorizontalAlignment="Stretch" />
+                <Button Content="Canecl" HorizontalAlignment="Right" DockPanel.Dock="Right"  Margin="3,0,0,0" Click="CaneclButton_Click" />
+                <Button x:Name="createButton" Content="Create" DockPanel.Dock="Right"  HorizontalAlignment="Right" Margin="3,0,0,0" Click="CreateButton_Click" />
+            </DockPanel>
+        </Grid>
+    </Border>
 </UserControl>
+

@@ -47,9 +47,16 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.DataGrid">
+      <HintPath>..\..\lib\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\..\lib\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="scr\Image\ImageCenter.cs" />
+    <Compile Include="scr\Utility\IView.cs" />
+    <Compile Include="scr\Utility\ImageCenter.cs" />
     <Compile Include="scr\PluginExplorer.xaml.cs">
       <DependentUpon>PluginExplorer.xaml</DependentUpon>
     </Compile>

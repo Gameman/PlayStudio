@@ -11,7 +11,7 @@
             <ColumnDefinition Width="166*" />
         </Grid.ColumnDefinitions>
         <my:TreeViewEx x:Name="_treeViewEx1" Margin="4,4,0,4" SelectedItemChanged="_treeViewEx1_SelectedItemChanged" />
-        <ListBox x:Name="_listView1" Grid.Column="2" Margin="0,4,4,4" />
+        <ListBox x:Name="_listView1" Grid.Column="2" Margin="0,4,4,4" SelectionChanged="_listView1_SelectionChanged" />
     </Grid>
 </UserControl>
 
